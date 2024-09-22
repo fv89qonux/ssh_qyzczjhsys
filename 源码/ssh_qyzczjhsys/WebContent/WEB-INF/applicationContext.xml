@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName"
+			value="com.mysql.cj.jdbc.Driver">
+		</property>
+		<property name="url"
+			value="jdbc:mysql://127.0.0.1:3306/ssh_qyzczjhsys?useSSL=false&amp;serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;allowPublicKeyRetrieval=true">
+		</property>
+		<property name="username" value="ssh_qyzczjhsys"></property>
+		<property name="password" value="ssh_qyzczjhsys"></property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.SQLServerDialect
+				</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>com/model/TAdmin.hbm.xml</value>
+				<value>com/model/TLeixing.hbm.xml</value>
+				<value>com/model/TShebei.hbm.xml</value>
+				<value>com/model/TXuesheng.hbm.xml</value>
+				<value>com/model/TJieyong.hbm.xml</value>
+				<value>com/model/TWeixiu.hbm.xml</value>
+				<value>com/model/TBaofei.hbm.xml</value>
+				<value>com/model/TJiance.hbm.xml</value>
+				<value>com/model/TShenqing.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="loginService" class="com.service.loginService">
+		<property name="adminDAO">
+			<ref bean="TAdminDAO" />
+		</property>
+		<property name="TXueshengDAO">
+			<ref bean="TXueshengDAO" />
+		</property>
+	</bean>
+	<bean id="leixingService" class="com.service.LeixingService">
+		<property name="TLeixingDAO">
+			<ref bean="TLeixingDAO" />
+		</property>
+		<property name="TShebeiDAO">
+			<ref bean="TShebeiDAO" />
+		</property>
+	</bean>
+	<bean id="xueshengService" class="com.service.XueshengService">
+		<property name="TXueshengDAO">
+			<ref bean="TXueshengDAO" />
+		</property>
+	</bean>
+	
+	<bean id="TAdminDAO" class="com.dao.TAdminDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="adminAction" class="com.action.adminAction" scope="prototype">
+		<property name="adminDAO">
+			<ref bean="TAdminDAO" />
+		</property>
+	</bean>
+	
+	<bean id="TShebeiDAO" class="com.dao.TShebeiDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="shebieAction" class="com.action.ShebeiAction" scope="prototype">
+		<property name="TShebeiDAO">
+			<ref bean="TShebeiDAO" />
+		</property>
+		<property name="TLeixingDAO">
+			<ref bean="TLeixingDAO" />
+		</property>
+	</bean>	
+	
+	<bean id="TLeixingDAO" class="com.dao.TLeixingDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="leixingAction" class="com.action.LeixingAction" scope="prototype">
+		<property name="TLeixingDAO">
+			<ref bean="TLeixingDAO" />
+		</property>
+	</bean>	
+	<bean id="TJieyongDAO" class="com.dao.TJieyongDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="TWeixiuDAO" class="com.dao.TWeixiuDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="TBaofeiDAO" class="com.dao.TBaofeiDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="TJianceDAO" class="com.dao.TJianceDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	<bean id="TXueshengDAO" class="com.dao.TXueshengDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="xueshengAction" class="com.action.XueshengAction" scope="prototype">
+		<property name="TXueshengDAO">
+			<ref bean="TXueshengDAO" />
+		</property>
+	</bean>	
+	<bean id="jieyongAction" class="com.action.JieyongAction" scope="prototype">
+		<property name="TJieyongDAO">
+			<ref bean="TJieyongDAO" />
+		</property>
+		<property name="TShebeiDAO">
+			<ref bean="TShebeiDAO" />
+		</property>
+		<property name="TShenqingDAO">
+			<ref bean="TShenqingDAO" />
+		</property>
+	</bean>
+	
+	<bean id="weixiuAction" class="com.action.WeixiuAction" scope="prototype">
+		<property name="TWeixiuDAO">
+			<ref bean="TWeixiuDAO" />
+		</property>
+		<property name="TShebeiDAO">
+			<ref bean="TShebeiDAO" />
+		</property>
+	</bean>
+	
+	<bean id="baofeiAction" class="com.action.BaofeiAction" scope="prototype">
+		<property name="TBaofeiDAO">
+			<ref bean="TBaofeiDAO" />
+		</property>
+		<property name="TShebeiDAO">
+			<ref bean="TShebeiDAO" />
+		</property>
+	</bean>
+	
+	<bean id="jianceAction" class="com.action.JianceAction" scope="prototype">
+		<property name="TJianceDAO">
+			<ref bean="TJianceDAO" />
+		</property>
+		<property name="TShebeiDAO">
+			<ref bean="TShebeiDAO" />
+		</property>
+	</bean>
+	
+	<bean id="TShenqingDAO" class="com.dao.TShenqingDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	<bean id="shenqingAction" class="com.action.ShenqingAction" scope="prototype">
+		<property name="TShenqingDAO">
+			<ref bean="TShenqingDAO" />
+		</property>
+		<property name="TShebeiDAO">
+			<ref bean="TShebeiDAO" />
+		</property>
+	</bean>	
+	</beans>
